@@ -111,7 +111,7 @@ class RenderChartElementLayoutBuilder<T, D> extends RenderBox
 
   void refresh() {
     try {
-      markNeedsBuild();
+    markNeedsLayout();
     } catch (e) {
       // try marking this widget as dirty and needs layout repaint. This should
       // work if the object is a RenderObject. Might need something else in other
