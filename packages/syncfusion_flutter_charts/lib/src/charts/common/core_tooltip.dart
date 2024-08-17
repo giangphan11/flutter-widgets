@@ -165,12 +165,9 @@ class CoreTooltipState extends State<CoreTooltip>
       if (renderObject != null &&
           renderObject.attached &&
           renderObject is RenderConstrainedLayoutBuilder) {
-        try {
-          // try to use the old code
-          renderObject.markNeedsLayout();
-        } catch (e) {
-          // if it fails, on (Flutter 3.24), use markNeedsPaint instead
-          renderObject.markNeedsPaint();
+        if (startFromZero) {
+          /// dirty hack for re-layouting the tooltip
+          setState(() {});
         }
       }
     }
@@ -178,12 +175,6 @@ class CoreTooltipState extends State<CoreTooltip>
 
   void hide({bool immediately = false}) {
     immediately ? _controller.reset() : _controller.reverse();
-    // (_tooltipKey.currentContext?.findRenderObject()
-    //         as RenderConstrainedLayoutBuilder<BoxConstraints, RenderBox>?)
-    //     ?.markNeedsBuild();
-    // What aver this dead codes does, markNeedsBuild isn't a function available
-    // on RenderObject in flutter 3.24, should be changed to markNeedsPaint or
-    // markNeedsLayout.
   }
 
   void _startShowTimer() {
